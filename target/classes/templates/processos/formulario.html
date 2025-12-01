@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:classappend="${tema == 'dark' ? 'dark-theme' : ''}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${processo.id != null} ? 'Editar Processo' : 'Novo Processo'">Formulário de Processo</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- CSS Customizado com Dark Mode -->
+    <style>
+        /* VARIAVEIS CSS */
+        :root {
+            --primary-color: #0d6efd;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #0dcaf0;
+            /* Cores Modo Claro */
+            --bg-color: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-color: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --navbar-bg: #0d6efd;
+            --footer-bg: #ffffff;
+        }
+
+        /* DARK MODE VARIABLES */
+        .dark-theme {
+            --bg-color: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --text-color: #e9ecef;
+            --text-muted: #adb5bd;
+            --border-color: #495057;
+            --navbar-bg: #0a0a0a;
+            --footer-bg: #2d2d2d;
+            /* Ajustar Bootstrap para dark mode */
+            --bs-body-bg: #1a1a1a;
+            --bs-body-color: #e9ecef;
+        }
+
+        /* ESTILOS GERAIS */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .navbar {
+            background-color: var(--navbar-bg) !important;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        /* BADGES */
+        .badge-ocioso { background-color: #6c757d !important; color: white !important; }
+        .badge-baixa { background-color: #198754 !important; color: white !important; }
+        .badge-media { background-color: #ffc107 !important; color: #000 !important; }
+        .badge-alta { background-color: #fd7e14 !important; color: white !important; }
+        .badge-urgente { background-color: #dc3545 !important; color: white !important; }
+
+        /* FORMULARIOS E INPUTS */
+        .form-control, .form-select {
+            background-color: var(--bg-card);
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--bg-card);
+            border-color: var(--primary-color);
+            color: var(--text-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .input-group-text {
+            background-color: var(--bg-card);
+            border-color: var(--border-color);
+            color: var(--text-muted);
+        }
+
+        /* BOTAO MODO ESCURO */
+        .theme-toggle {
+            background: linear-gradient(135deg, #ffd700, #ffed4a);
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            color: #000;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dark-theme .theme-toggle {
+            background: linear-gradient(135deg, #4a5568, #2d3748);
+            color: #e2e8f0;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            color: inherit;
+        }
+
+        .theme-toggle i {
+            font-size: 1rem;
+        }
+
+        /* TEXTO MUTED */
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        .subpasso-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/processos(tema=${tema})}">
+            <i class="bi bi-list-task"></i> Gerenciador de Processos
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/processos(tema=${tema})}">
+                        <i class="bi bi-list"></i> Processos
+                    </a>
+                </li>
+            </ul>
+            <!-- Botao Toggle Tema -->
+            <div class="d-flex">
+                <a th:href="@{/processos/novo(tema=${tema == 'dark' ? null : 'dark'})}" class="theme-toggle">
+                    <i th:class="${tema == 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'}"></i>
+                    <span th:text="${tema == 'dark' ? 'Modo Claro' : 'Modo Escuro'}">Modo Escuro</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Container Principal -->
+<div class="container mt-4">
+    <!-- Cabecalho da Pagina -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3">
+                <i class="bi bi-plus-circle text-primary me-2" th:if="${processo.id == null}"></i>
+                <i class="bi bi-pencil text-primary me-2" th:unless="${processo.id == null}"></i>
+                <span th:text="${processo.id != null} ? 'Editar Processo' : 'Novo Processo'">Novo Processo</span>
+            </h1>
+            <p class="text-muted mb-0" th:if="${processo.id == null}">Preencha as informações para criar um novo processo</p>
+            <p class="text-muted mb-0" th:unless="${processo.id == null}">Atualize as informações do processo</p>
+        </div>
+        <a th:href="@{/processos(tema=${tema})}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Voltar à Lista
+        </a>
+    </div>
+
+    <!-- Formulário Principal -->
+    <form th:action="${processo.id == null} ? @{/processos} : @{/processos/atualizar/{id}(id=${processo.id})}" th:object="${processo}" method="post">
+        <input type="hidden" th:name="tema" th:value="${tema}">
+        <div class="row">
+            <!-- Coluna Principal - Dados do Processo -->
+            <div class="col-lg-8">
+                <!-- Card Informações Básicas -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0"><i class="bi bi-info-circle me-1"></i> Informações Básicas</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Título -->
+                        <div class="mb-3">
+                            <label for="titulo" class="form-label">Título do Processo <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="titulo" th:field="*{titulo}" placeholder="Digite aqui o título para o novo processo" maxlength="100" required>
+                            <div class="form-text">Máximo 100 caracteres. Seja claro e descritivo.</div>
+                        </div>
+                        <!-- Descrição -->
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label">Descrição (Opcional)</label>
+                            <textarea class="form-control" id="descricao" th:field="*{descricao}" rows="4" placeholder="Descreva os detalhes e objetivos do processo..." maxlength="500"></textarea>
+                            <div class="form-text">Forneça mais detalhes sobre o processo (máximo 500 caracteres)</div>
+                        </div>
+                        <!-- Responsáveis -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="feitoPor" class="form-label">Responsável <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <input type="text" class="form-control" id="feitoPor" th:field="*{feitoPor}" placeholder="Nome do responsável" maxlength="50" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="paraQuem" class="form-label">Destinatário <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-arrow-right"></i></span>
+                                        <input type="text" class="form-control" id="paraQuem" th:field="*{paraQuem}" placeholder="Para quem é o processo" maxlength="50" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Prioridade -->
+                        <div class="mb-3">
+                            <label for="prioridade" class="form-label">Prioridade <span class="text-danger">*</span></label>
+                            <select class="form-select" id="prioridade" th:field="*{prioridade}" required>
+                                <option value="">Selecione a prioridade</option>
+                                <option value="OCIOSO">Ocioso</option>
+                                <option value="BAIXA">Baixa</option>
+                                <option value="MEDIA">Média</option>
+                                <option value="ALTA">Alta</option>
+                                <option value="URGENTE">Urgente</option>
+                            </select>
+                            <div class="form-text">
+                                <small>
+                                    <span class="badge badge-ocioso me-1">Ocioso</span>
+                                    <span class="badge badge-baixa me-1">Baixa</span>
+                                    <span class="badge badge-media me-1">Média</span>
+                                    <span class="badge badge-alta me-1">Alta</span>
+                                    <span class="badge badge-urgente">Urgente</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Subpassos -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-list-check me-2"></i>Subpassos</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="subpassos-container">
+                            <!-- Subpassos existentes -->
+                            <div th:each="subpasso, iter : ${processo.subPassos}" class="subpasso-item mb-3 p-3 rounded">
+                                <input type="hidden" th:field="*{subPassos[__${iter.index}__].id}">
+                                <input type="hidden" th:field="*{subPassos[__${iter.index}__].ordem}" th:value="${iter.index + 1}">
+
+                                <div class="mb-2">
+                                    <label class="form-label fw-bold">Título do Subpasso <span th:text="${iter.index + 1}"></span></label>
+                                    <input type="text"
+                                           class="form-control"
+                                           th:field="*{subPassos[__${iter.index}__].titulo}"
+                                           placeholder="Digite o título do subpasso"
+                                           required>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label class="form-label">Descrição</label>
+                                    <textarea class="form-control"
+                                              rows="2"
+                                              th:field="*{subPassos[__${iter.index}__].descricao}"
+                                              placeholder="Descreva os detalhes deste subpasso"></textarea>
+                                </div>
+
+                                <div class="form-check mb-2">
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           th:field="*{subPassos[__${iter.index}__].obrigatorio}"
+                                           th:id="'obrigatorio' + ${iter.index}">
+                                    <label class="form-check-label" th:for="'obrigatorio' + ${iter.index}">Obrigatório</label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input type="checkbox"
+                                           class="form-check-input"
+                                           th:field="*{subPassos[__${iter.index}__].concluido}"
+                                           th:id="'concluido' + ${iter.index}">
+                                    <label class="form-check-label" th:for="'concluido' + ${iter.index}">Concluído</label>
+                                </div>
+
+                                <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="removerSubpasso(this)">
+                                    <i class="bi bi-trash"></i> Remover este subpasso
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-outline-primary mt-3" onclick="adicionarSubpasso()">
+                            <i class="bi bi-plus-circle me-1"></i> Novo Subpasso
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna Lateral - Cronograma e Ações -->
+            <div class="col-lg-4">
+                <!-- Card Cronograma -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="card-title mb-0"><i class="bi bi-calendar3 me-1"></i> Cronograma</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Data de Início -->
+                        <div class="mb-3">
+                            <label for="dataInicio" class="form-label">Data de Início <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="dataInicio" th:field="*{dataInicio}" required>
+                        </div>
+                        <!-- Data de Término -->
+                        <div class="mb-3">
+                            <label for="dataTermino" class="form-label">Data de Término <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="dataTermino" th:field="*{dataTermino}" required>
+                        </div>
+                        <!-- Status (apenas para edição) -->
+                        <div th:if="${processo.id != null}" class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" th:field="*{concluido}" id="concluido">
+                                <label class="form-check-label" for="concluido">
+                                    <strong>Processo concluído</strong><br>
+                                    <small class="text-muted">Marque quando todas as etapas estiverem finalizadas</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Ações -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body text-center">
+                        <button type="submit" class="btn btn-success btn-lg w-100 mb-3">
+                            <i class="bi bi-check-circle me-1"></i>
+                            <span th:text="${processo.id != null} ? 'Atualizar Processo' : 'Criar Processo'">Criar Processo</span>
+                        </button>
+                        <a th:href="@{/processos(tema=${tema})}" class="btn btn-outline-secondary w-100">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    let subpassoIndex = /*[[${#lists.size(processo.subPassos)}]]*/ 0;
+
+    function adicionarSubpasso() {
+        const container = document.getElementById('subpassos-container');
+        const novoSubpasso = document.createElement('div');
+        novoSubpasso.className = 'subpasso-item mb-3 p-3 rounded';
+        novoSubpasso.innerHTML = `
+        <input type="hidden" name="subPassos[${subpassoIndex}].ordem" value="${subpassoIndex + 1}">
+
+        <div class="mb-2">
+            <label class="form-label fw-bold">Título do Subpasso ${subpassoIndex + 1}</label>
+            <input type="text"
+                   class="form-control"
+                   name="subPassos[${subpassoIndex}].titulo"
+                   placeholder="Digite o título do subpasso"
+                   required>
+        </div>
+
+        <div class="mb-2">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-control"
+                      rows="2"
+                      name="subPassos[${subpassoIndex}].descricao"
+                      placeholder="Descreva os detalhes deste subpasso"></textarea>
+        </div>
+
+        <div class="form-check mb-2">
+            <input type="checkbox"
+                   class="form-check-input"
+                   name="subPassos[${subpassoIndex}].obrigatorio"
+                   value="true"
+                   checked
+                   id="obrigatorio${subpassoIndex}">
+            <label class="form-check-label" for="obrigatorio${subpassoIndex}">Obrigatório</label>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox"
+                   class="form-check-input"
+                   name="subPassos[${subpassoIndex}].concluido"
+                   value="true"
+                   id="concluido${subpassoIndex}">
+            <label class="form-check-label" for="concluido${subpassoIndex}">Concluído</label>
+        </div>
+
+        <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="removerSubpasso(this)">
+            <i class="bi bi-trash"></i> Remover este subpasso
+        </button>
+    `;
+        container.appendChild(novoSubpasso);
+        subpassoIndex++;
+    }
+
+    function removerSubpasso(button) {
+        button.closest('.subpasso-item').remove();
+    }
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,825 @@
+/* ==========================================
+   GERENCIADOR DE PROCESSOS - CSS CUSTOMIZADO
+   ========================================== */
+
+/* ==========================================
+   1. VARIÁVEIS E RESET
+   ========================================== */
+
+:root {
+    /* Cores Principais */
+    --primary-color: #0d6efd;
+    --primary-hover: #0b5ed7;
+    --secondary-color: #6c757d;
+
+    /* Cores de Status/Prioridade */
+    --success-color: #198754;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #0dcaf0;
+
+    /* Cores de Prioridade */
+    --ocioso-color: #6c757d;
+    --baixa-color: #198754;
+    --media-color: #ffc107;
+    --alta-color: #fd7e14;
+    --urgente-color: #dc3545;
+
+    /* Cores Neutras */
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #495057;
+    --white: #ffffff;
+
+    /* Sombras */
+    --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+
+    /* Transições */
+    --transition-fast: 0.15s ease-in-out;
+    --transition-normal: 0.3s ease-in-out;
+    --transition-slow: 0.5s ease-in-out;
+
+    /* Espaçamentos */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 3rem;
+
+    /* Border Radius */
+    --border-radius-sm: 0.375rem;
+    --border-radius-md: 0.5rem;
+    --border-radius-lg: 0.75rem;
+
+    /* Fontes */
+    --font-family-base: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 600;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-base);
+    line-height: 1.6;
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+}
+
+/* ==========================================
+   2. LAYOUT GERAL E ESTRUTURA
+   ========================================== */
+
+.container-main {
+    min-height: calc(100vh - 160px);
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+}
+
+/* Navbar Customizada */
+.navbar-brand {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.navbar-brand i {
+    font-size: 1.25rem;
+}
+
+.nav-link {
+    font-weight: var(--font-weight-medium);
+    transition: all var(--transition-fast);
+    border-radius: var(--border-radius-sm);
+    margin: 0 var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md) !important;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.nav-link i {
+    margin-right: var(--spacing-xs);
+}
+
+/* Footer */
+footer {
+    background-color: var(--white);
+    border-top: 1px solid var(--medium-gray);
+    margin-top: auto;
+    padding: var(--spacing-lg) 0;
+}
+
+/* ==========================================
+   3. CARDS E CONTAINERS
+   ========================================== */
+
+.card {
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+    background-color: var(--white);
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--medium-gray);
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-weight: var(--font-weight-medium);
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+}
+
+/* Cards Especiais */
+.processo-card {
+    transition: all var(--transition-normal);
+    cursor: pointer;
+    border-left: 4px solid transparent;
+}
+
+.processo-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-left-color: var(--primary-color);
+}
+
+.processo-card.concluido {
+    opacity: 0.8;
+    border-left-color: var(--success-color);
+}
+
+.processo-card.atrasado {
+    border-left-color: var(--danger-color);
+}
+
+/* ==========================================
+   4. BADGES E STATUS
+   ========================================== */
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+/* Badges de Prioridade */
+.badge-ocioso {
+    background-color: var(--ocioso-color) !important;
+    color: var(--white) !important;
+}
+
+.badge-baixa {
+    background-color: var(--baixa-color) !important;
+    color: var(--white) !important;
+}
+
+.badge-media {
+    background-color: var(--media-color) !important;
+    color: var(--dark-gray) !important;
+}
+
+.badge-alta {
+    background-color: var(--alta-color) !important;
+    color: var(--white) !important;
+}
+
+.badge-urgente {
+    background-color: var(--urgente-color) !important;
+    color: var(--white) !important;
+    animation: pulse-urgent 2s infinite;
+}
+
+@keyframes pulse-urgent {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.status-badge {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+}
+
+/* ==========================================
+   5. SISTEMA DE GAVETAS
+   ========================================== */
+
+.gaveta-toggle {
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    padding: var(--spacing-md) 0;
+    font-weight: var(--font-weight-medium);
+    color: var(--primary-color);
+    transition: all var(--transition-fast);
+    border-radius: var(--border-radius-sm);
+}
+
+.gaveta-toggle:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+    padding-left: var(--spacing-sm);
+}
+
+.gaveta-toggle i {
+    transition: transform var(--transition-normal);
+    font-size: 0.875rem;
+}
+
+.gaveta-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-slow) ease-out;
+    background-color: var(--light-gray);
+}
+
+.gaveta-content.show {
+    max-height: 2000px;
+}
+
+/* ==========================================
+   6. SUB-PASSOS
+   ========================================== */
+
+.subpasso-item {
+    border-left: 3px solid var(--medium-gray);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+    background-color: var(--white);
+    transition: all var(--transition-normal);
+}
+
+.subpasso-item:hover {
+    transform: translateX(2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.subpasso-item.concluido {
+    border-left-color: var(--success-color);
+    background-color: var(--light-gray);
+    opacity: 0.8;
+}
+
+.subpasso-item.concluido h6,
+.subpasso-item.concluido .text-muted {
+    text-decoration: line-through;
+    color: var(--secondary-color) !important;
+}
+
+.subpasso-item.obrigatorio {
+    border-left-color: var(--warning-color);
+    background-color: #fff8e1;
+}
+
+.subpasso-item.obrigatorio::before {
+    content: "⚠️";
+    position: absolute;
+    right: var(--spacing-sm);
+    top: var(--spacing-sm);
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+/* Checkbox de Sub-passo */
+.form-check-input:checked {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+/* ==========================================
+   7. PROGRESSO E ESTATÍSTICAS
+   ========================================== */
+
+.progress {
+    height: 8px;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--medium-gray);
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--primary-color), var(--info-color));
+    border-radius: var(--border-radius-sm);
+    transition: width var(--transition-normal);
+    position: relative;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.1) 50%, transparent 50%, transparent 75%, rgba(255,255,255,0.1) 75%);
+    background-size: 20px 20px;
+    animation: progress-stripes 1s linear infinite;
+}
+
+@keyframes progress-stripes {
+    0% { background-position: 0 0; }
+    100% { background-position: 20px 0; }
+}
+
+.progress-custom {
+    height: 10px;
+    border-radius: var(--border-radius-sm);
+}
+
+/* ==========================================
+   8. FORMULÁRIOS
+   ========================================== */
+
+.form-label {
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-sm);
+    color: var(--dark-gray);
+}
+
+.form-control,
+.form-select {
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    transition: all var(--transition-fast);
+    font-size: var(--font-size-base);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    transform: none;
+}
+
+.form-control:hover:not(:focus),
+.form-select:hover:not(:focus) {
+    border-color: var(--primary-hover);
+}
+
+.input-group-text {
+    background-color: var(--light-gray);
+    border: 1px solid var(--medium-gray);
+    color: var(--dark-gray);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Validação */
+.is-invalid {
+    border-color: var(--danger-color) !important;
+}
+
+.invalid-feedback {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--danger-color);
+    margin-top: var(--spacing-xs);
+}
+
+.form-text {
+    font-size: var(--font-size-sm);
+    color: var(--secondary-color);
+    margin-top: var(--spacing-xs);
+}
+
+/* Switch customizado */
+.form-check-input[type="checkbox"] {
+    border-radius: var(--border-radius-sm);
+}
+
+/* ==========================================
+   9. BOTÕES
+   ========================================== */
+
+.btn {
+    font-weight: var(--font-weight-medium);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    text-decoration: none;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-hover), #0a58ca);
+    border-color: var(--primary-hover);
+}
+
+.btn-action {
+    border: none;
+    background: transparent;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+    color: var(--secondary-color);
+}
+
+.btn-action:hover {
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+}
+
+.btn-group-sm .btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+}
+
+/* ==========================================
+   10. ALERTAS E NOTIFICAÇÕES
+   ========================================== */
+
+.alert {
+    border: none;
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    box-shadow: var(--shadow-sm);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid var(--success-color);
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da, #f1aeb5);
+    color: #721c24;
+    border-left: 4px solid var(--danger-color);
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    color: #856404;
+    border-left: 4px solid var(--warning-color);
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+    color: #0c5460;
+    border-left: 4px solid var(--info-color);
+}
+
+/* ==========================================
+   11. ESTADOS E ANIMAÇÕES
+   ========================================== */
+
+/* Estado de carregamento */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--medium-gray);
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Fade in animation */
+.fade-in {
+    animation: fadeIn var(--transition-normal) ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hover effects para cards */
+.hover-lift {
+    transition: all var(--transition-normal);
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ==========================================
+   12. RESPONSIVIDADE
+   ========================================== */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .container-main {
+        padding-top: var(--spacing-md);
+        padding-bottom: var(--spacing-md);
+    }
+
+    .card-body {
+        padding: var(--spacing-md);
+    }
+
+    .navbar-brand {
+        font-size: var(--font-size-base);
+    }
+
+    .btn-group-sm .btn {
+        padding: var(--spacing-xs);
+        font-size: 0.75rem;
+    }
+
+    .processo-card {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .subpasso-item {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    :root {
+        --spacing-md: 0.75rem;
+        --spacing-lg: 1rem;
+    }
+
+    .card-header,
+    .card-body {
+        padding: var(--spacing-md);
+    }
+
+    .btn {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: var(--font-size-sm);
+    }
+
+    .form-control,
+    .form-select {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: var(--font-size-sm);
+    }
+
+    .gaveta-toggle {
+        padding: var(--spacing-sm) 0;
+        font-size: var(--font-size-sm);
+    }
+
+    .subpasso-item {
+        padding: var(--spacing-sm);
+    }
+
+    .progress {
+        height: 6px;
+    }
+
+    .navbar-brand {
+        font-size: 0.95rem;
+    }
+
+    .nav-link {
+        padding: var(--spacing-xs) var(--spacing-sm) !important;
+        font-size: var(--font-size-sm);
+    }
+}
+
+/* ==========================================
+   13. PRINT STYLES
+   ========================================== */
+
+@media print {
+    .navbar,
+    .btn,
+    footer,
+    .gaveta-toggle {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+    }
+
+    .processo-card {
+        transform: none !important;
+    }
+
+    .gaveta-content {
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    .badge {
+        border: 1px solid #ddd !important;
+        color: black !important;
+    }
+}
+
+/* ==========================================
+   14. DARK MODE (PREPARAÇÃO FUTURA)
+   ========================================== */
+
+@media (prefers-color-scheme: dark) {
+    body.dark-mode {
+        --light-gray: #1e1e1e;
+        --medium-gray: #2d2d2d;
+        --white: #252525;
+        --dark-gray: #e0e0e0;
+
+        background-color: var(--light-gray);
+        color: var(--dark-gray);
+    }
+
+    body.dark-mode .card {
+        background-color: var(--white);
+        border-color: var(--medium-gray);
+    }
+
+    body.dark-mode .form-control,
+    body.dark-mode .form-select {
+        background-color: var(--white);
+        border-color: var(--medium-gray);
+        color: var(--dark-gray);
+    }
+}
+
+/* ==========================================
+   15. UTILITIES E HELPERS
+   ========================================== */
+
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.user-select-none {
+    user-select: none;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-gray);
+    border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--medium-gray);
+    border-radius: var(--border-radius-sm);
+    transition: background var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* ==========================================
+   16. CUSTOMIZAÇÕES ESPECÍFICAS
+   ========================================== */
+
+/* Logo e branding */
+.brand-icon {
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Estatísticas dashboard */
+.stats-card {
+    background: linear-gradient(135deg, var(--white), var(--light-gray));
+    border: none;
+    transition: all var(--transition-normal);
+}
+
+.stats-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.stats-number {
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+}
+
+/* Timeline para processos */
+.timeline-item {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 1.2rem;
+    width: 2px;
+    height: calc(100% - 0.7rem);
+    background-color: var(--medium-gray);
+}
+
+.timeline-item:last-child::after {
+    display: none;
+}
